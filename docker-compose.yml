@@ -1,22 +1,26 @@
+# Docker Compose file
+# This file defines the services, networks, and volumes required to run RabbitMQ in a Docker container.
 # version: '3.8'
 
+# Define the services (containers) to be run
 services:
-
+  # RabbitMQ service
   rabbit:
-    image: rabbitmq:4.0-rc-management
-    container_name: rabbit
+    image: rabbitmq:4.0-rc-management # Use the RabbitMQ image with management plugin
+    container_name: rabbit # Name of the container
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5672:5672" # Expose port 5672 for RabbitMQ's AMQP protocol
+      - "15672:15672" # Expose port 15672 for RabbitMQ's management UI
     environment:
-      - RABBITMQ_DEFAULT_USER=mints
-      - RABBITMQ_DEFAULT_PASS=mints
+      - RABBITMQ_DEFAULT_USER=mints # Set the default username for RabbitMQ
+      - RABBITMQ_DEFAULT_PASS=mints # Set the default password for RabbitMQ
     volumes:
-      - ../rabbitmq/data/:/var/lib/rabbitmq/
-      - ../rabbitmq/log/:/var/log/rabbitmq
+      - ../rabbitmq/data/:/var/lib/rabbitmq/ # Mount a local directory for RabbitMQ data persist
+      - ../rabbitmq/log/:/var/log/rabbitmq # Mount a local directory for RabbitMQ logs
     networks:
-      - rabbitmq_network
+      - rabbitmq_network # Attach the service to the custom network
 
+# Define the networks to be created
 networks:
-  rabbitmq_network:
-    driver: bridge
+  rabbitmq_network: # Custom network for RabbitMQ
+    driver: bridge # Use the bridge driver for the network
